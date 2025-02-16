@@ -18,6 +18,7 @@ import { Helmet } from "react-helmet";
 import logo from "../../assets/logo1.png";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import ColorModeContext from "../../layout/themeContext";
+
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   borderRadius: "16px",
@@ -89,7 +90,6 @@ const Login = () => {
   const { appName } = colorMode;
   const [user, setUser] = useState({ email: "", password: "" });
   const [allowSignup, setAllowSignup] = useState(false);
-  // const { getPublicSetting } = useSettings();
   const { handleLogin } = useContext(AuthContext);
 
   const handleChangeInput = (e) => {
@@ -101,16 +101,6 @@ const Login = () => {
     handleLogin(user);
   };
 
-  // useEffect(() => {
-  // 	getPublicSetting("allowSignup")
-  // 		.then((data) => {
-  // 			setAllowSignup(data === "enabled");
-  // 		})
-  // 		.catch((error) => {
-  // 			console.log("Erro ao ler configuração", error);
-  // 		});
-  // }, []);
-
   const validateInputs = () => {
     const email = document.getElementById("email");
     const password = document.getElementById("password");
@@ -118,7 +108,7 @@ const Login = () => {
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage("Por favor, insira um email válido.");
+      setEmailErrorMessage("Por favor, ingrese un email válido.");
       isValid = false;
     } else {
       setEmailError(false);
@@ -127,7 +117,7 @@ const Login = () => {
 
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage("A senha deve ter pelo menos 6 caracteres.");
+      setPasswordErrorMessage("La contraseña debe tener al menos 6 caracteres.");
       isValid = false;
     } else {
       setPasswordError(false);
@@ -140,7 +130,7 @@ const Login = () => {
   return (
     <>
       <Helmet>
-        <title>{appName || "EquipeChat"}</title>
+        <title>{appName || "Connectar Soluciones"}</title>
         <link rel="icon" href="/favicon.png" />
       </Helmet>
       <CssBaseline enableColorScheme />
@@ -168,13 +158,13 @@ const Login = () => {
                 fontSize: "clamp(1.5rem, 5vw, 2rem)",
               }}
             >
-              Bem-vindo de volta!
+              ¡Bienvenido de nuevo!
             </Typography>
             <Typography
               variant="body1"
               sx={{ color: "rgba(255, 255, 255, 0.7)", textAlign: "center" }}
             >
-              Acesse sua conta para continuar
+              Accede a tu cuenta para continuar
             </Typography>
           </Box>
 
@@ -190,14 +180,14 @@ const Login = () => {
             }}
           >
             <FormControl>
-              <StyledFormLabel htmlFor="email">Seu e-mail</StyledFormLabel>
+              <StyledFormLabel htmlFor="email">Tu correo electrónico</StyledFormLabel>
               <StyledTextField
                 error={emailError}
                 helperText={emailErrorMessage}
                 id="email"
                 type="email"
                 name="email"
-                placeholder="exe@email.com"
+                placeholder="ejemplo@email.com"
                 autoComplete="email"
                 autoFocus
                 required
@@ -218,10 +208,10 @@ const Login = () => {
                 sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}
               >
                 <StyledFormLabel htmlFor="password">
-                  Insira sua senha
+                  Ingresa tu contraseña
                 </StyledFormLabel>
                 <StyledLink href="/recovery-password" variant="body2">
-                  Esqueci minha senha
+                  Olvidé mi contraseña
                 </StyledLink>
               </Box>
               <StyledTextField
@@ -265,7 +255,7 @@ const Login = () => {
               }}
               endIcon={<SendIcon />}
             >
-              Entrar
+              Iniciar sesión
             </Button>
 
             {!allowSignup && (
@@ -290,7 +280,7 @@ const Login = () => {
                       fontSize: "0.875rem",
                     }}
                   >
-                    ou
+                    o
                   </Typography>
                   <Divider
                     sx={{
@@ -317,11 +307,11 @@ const Login = () => {
                       fontWeight: 500,
                     }}
                   >
-                    Novo por aqui?
+                    ¿Nuevo aquí?
                   </Typography>
                   <Typography sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
-                    Crie sua conta agora e comece a usar o{" "}
-                    {appName || "EquipeChat"}
+                    Crea tu cuenta ahora y comienza a usar{" "}
+                    {appName || "Connectar Soluciones"}
                     <StyledLink
                       href="/signup"
                       sx={{
@@ -334,7 +324,7 @@ const Login = () => {
                         },
                       }}
                     >
-                      Cadastre-se →
+                      Regístrate →
                     </StyledLink>
                   </Typography>
                 </Box>
