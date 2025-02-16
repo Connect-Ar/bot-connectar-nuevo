@@ -38,9 +38,9 @@ import ColorModeContext from "../../layout/themeContext";
 import { openApi } from "../../services/api";
 import { i18n } from "../../translate/i18n";
 import { countryRules } from "../../utils/countryRules";
+
 const useStyles = makeStyles((theme) => ({
   root: {
-    //marginTop: "20px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -96,12 +96,6 @@ const useStyles = makeStyles((theme) => ({
     height: "auto",
     maxHeight: "120px",
     margin: "0 auto",
-    // content:
-    //   "url(" +
-    //   (theme.mode === "light"
-    //     ? theme.calculatedLogoLight()
-    //     : theme.calculatedLogoDark()) +
-    //   ")",
   },
   link: {
     fontSize: "16px",
@@ -152,7 +146,6 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   position: "relative",
   padding: theme.spacing(2),
   background: "linear-gradient(135deg, #474c4f 0%, #090b11 100%)",
-  // background: "linear-gradient(2deg, #bc48ff 0%, #aa83ff 50%, #474bff 100%)",
   [theme.breakpoints.up("sm")]: {
     padding: theme.spacing(4),
   },
@@ -169,7 +162,6 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
       borderColor: "rgba(255, 255, 255, 0.2)",
     },
   },
-
   "& .MuiInputBase-input": {
     color: "rgba(255, 255, 255, 0.9)",
     paddingLeft: "10px",
@@ -204,7 +196,6 @@ const StyledSelect = styled(Select)(({ theme }) => ({
   "&:hover:not(.Mui-focused) fieldset": {
     borderColor: "rgba(255, 255, 255, 0.2)",
   },
-
   "& .MuiSelect-select": {
     color: "rgba(255, 255, 255, 0.9)",
     padding: "14px",
@@ -251,38 +242,31 @@ const PlanCard = styled(Box)(({ theme }) => ({
 
 const getPhoneValidationSchema = (maxLength, countryCode) => {
   return Yup.string()
-    .required("Phone é obrigatório")
+    .required("El teléfono es obligatorio")
     .matches(
       new RegExp(`^\\d{${11}}$`),
-      `Digite o número completo no formato (xx) xxxx xxxx e com ${11} dígitos (apenas números).`
+      `Ingrese el número completo en el formato (xx) xxxx xxxx con ${11} dígitos (solo números).`
     );
 };
 
 const UserSchema = Yup.object().shape({
   name: Yup.string()
-    .min(2, "Muito curto!")
-    .max(50, "Muito longo!")
-    .required("Nome é obrigatório"),
+    .min(2, "¡Muy corto!")
+    .max(50, "¡Muy largo!")
+    .required("El nombre es obligatorio"),
   companyName: Yup.string()
-    .min(2, "Muito curto!")
-    .max(50, "Muito longo!")
-    .required("Nome da empresa é obrigatória"),
+    .min(2, "¡Muy corto!")
+    .max(50, "¡Muy largo!")
+    .required("El nombre de la empresa es obligatorio"),
   password: Yup.string()
     .min(8, "")
     .matches(/[a-z]/, " ")
     .matches(/[A-Z]/, " ")
-    .required("Senha é obrigatória"),
-  email: Yup.string().email("E-mail inválido").required("E-mail é obrigatório"),
-  // phone: Yup.string()
-  //   .required("Phone é obrigatório")
-  //   .matches(
-  //     /^\d{13}$/,
-  //     "Digite o número completo no formato (XX) 9 XXXX-XXXX (apenas números)."
-  //   ),
-
+    .required("La contraseña es obligatoria"),
+  email: Yup.string().email("Correo electrónico inválido").required("El correo electrónico es obligatorio"),
   termo: Yup.boolean()
-    .oneOf([true], "Você deve aceitar os termos para continuar.")
-    .required("A aceitação dos termos é obrigatória"),
+    .oneOf([true], "Debes aceptar los términos para continuar.")
+    .required("La aceptación de los términos es obligatoria"),
 });
 
 const SignUp = () => {
@@ -331,30 +315,26 @@ const SignUp = () => {
     setLoading(true);
     const fetchData = async () => {
       const planList = await getPlanList({ listPublic: false });
-
       setPlans(planList);
       setLoading(false);
     };
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const handleCountryChange = (countryCode) => {
     const rules = countryRules[countryCode.toLowerCase()] || {
       maxLength: 11,
       code: countryCode.toUpperCase(),
     };
-
     setPhoneValidationSchema(
       getPhoneValidationSchema(rules.maxLength, rules.code)
     );
   };
 
   const handleSignUp = async (values) => {
-    console.log(values);
-
     try {
       await openApi.post("/auth/signup", values);
-      toast.success(i18n.t("signup.toasts.success"));
+      toast.success("Registro exitoso");
       history.push("/login");
     } catch (err) {
       toastError(err);
@@ -364,11 +344,10 @@ const SignUp = () => {
   return (
     <>
       <Helmet>
-        <title>{appName || "WorkZap"}</title>
+        <title>{appName || "Connectar Soluciones"}</title>
         <link rel="icon" href="/favicon.png" />
       </Helmet>
       <CssBaseline enableColorScheme />
-      {/* <div className={classes.leftScreen}></div> */}
       <SignUpContainer>
         <Card
           sx={{
@@ -382,7 +361,6 @@ const SignUp = () => {
               mb: 4,
               flexDirection: "column",
               alignItems: "center",
-
               color: "rgba(255, 255, 255, 0.7)",
             }}
           >
@@ -390,21 +368,20 @@ const SignUp = () => {
               <img src={logo} className={classes.logoImg} alt="logo" />
             </Box>
             <Typography component="h1" variant="h5">
-              {i18n.t("signup.title")}
+              Regístrate
             </Typography>
             <Typography
               variant="body1"
               sx={{ color: "rgba(255, 255, 255, 0.7)", textAlign: "center" }}
             >
-              Crie sua conta para começar
+              Crea tu cuenta para comenzar
             </Typography>
-            {/* <form className={classes.form} noValidate onSubmit={handleSignUp}> */}
             <Formik
               initialValues={user}
               enableReinitialize={true}
               validationSchema={Yup.object().shape({
                 ...UserSchema.fields,
-                phone: phoneValidationSchema, // Inclui o esquema dinâmico de telefone
+                phone: phoneValidationSchema,
               })}
               onSubmit={(values, actions) => {
                 setTimeout(() => {
@@ -417,9 +394,7 @@ const SignUp = () => {
                 <Form className={classes.form}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} style={{ width: "100%" }}>
-                      <StyledFormLabel>
-                        {i18n.t("signup.form.company")}
-                      </StyledFormLabel>
+                      <StyledFormLabel>Empresa</StyledFormLabel>
                       <Field
                         as={StyledTextField}
                         variant="outlined"
@@ -433,7 +408,7 @@ const SignUp = () => {
                         name="companyName"
                         autoComplete="companyName"
                         autoFocus
-                        placeholder="Sua empresa"
+                        placeholder="Nombre de tu empresa"
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
@@ -455,15 +430,13 @@ const SignUp = () => {
                       }}
                     >
                       <Grid item xs={12}>
-                        <StyledFormLabel>
-                          {i18n.t("signup.form.name")}
-                        </StyledFormLabel>
+                        <StyledFormLabel>Nombre completo</StyledFormLabel>
                         <Field
                           as={StyledTextField}
                           name="name"
                           variant="outlined"
                           size="small"
-                          placeholder="Seu nome completo"
+                          placeholder="Tu nombre completo"
                           error={touched.name && Boolean(errors.name)}
                           helperText={touched.name && errors.name}
                           fullWidth
@@ -478,14 +451,8 @@ const SignUp = () => {
                           }}
                         />
                       </Grid>
-                      <Grid
-                        item
-                        xs={12}
-                        style={{
-                          color: "#000",
-                        }}
-                      >
-                        <StyledFormLabel>Telefone</StyledFormLabel>
+                      <Grid item xs={12}>
+                        <StyledFormLabel>Teléfono</StyledFormLabel>
                         <Field
                           as={StyledTextField}
                           name="phone"
@@ -505,22 +472,17 @@ const SignUp = () => {
                             ),
                           }}
                         />
-                        {/* {errors.phone && touched.phone ? (
-                          <div style={{ color: "red" }}>{errors.phone}</div>
-                        ) : null} */}
                       </Grid>
                     </Box>
                     <Grid item xs={12}>
-                      <StyledFormLabel>
-                        {i18n.t("signup.form.email")}
-                      </StyledFormLabel>
+                      <StyledFormLabel>Correo electrónico</StyledFormLabel>
                       <Field
                         as={StyledTextField}
                         variant="outlined"
                         fullWidth
                         id="email"
                         size="small"
-                        placeholder="seu@email.com"
+                        placeholder="tucorreo@ejemplo.com"
                         name="email"
                         error={touched.email && Boolean(errors.email)}
                         helperText={touched.email && errors.email}
@@ -538,9 +500,7 @@ const SignUp = () => {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <StyledFormLabel>
-                        {i18n.t("signup.form.password")}
-                      </StyledFormLabel>
+                      <StyledFormLabel>Contraseña</StyledFormLabel>
                       <Field
                         as={StyledTextField}
                         variant="outlined"
@@ -577,7 +537,6 @@ const SignUp = () => {
                       <div
                         style={{
                           width: "100%",
-
                           marginTop: "10px",
                         }}
                       >
@@ -619,28 +578,14 @@ const SignUp = () => {
                                 : classes.spanRed
                             }
                           >
-                            Maiúscula
+                            Mayúscula
                           </span>
                         </div>
                       </div>
                     </Grid>
-
-                    {/* TOKEN */}
-                    {/* <Grid item xs={12}>
-                                    <Field
-                                        as={TextField}
-                                        variant="outlined"
-                                        fullWidth
-                                        id="token"
-                                        label={i18n.t("auth.token")}
-                                        name="token"
-                                        autoComplete="token"
-                                    />
-                                </Grid> */}
-
                     <Grid item xs={12}>
                       <StyledFormLabel htmlFor="plan-selection">
-                        Plano
+                        Plan
                       </StyledFormLabel>
                       <Field
                         as={StyledSelect}
@@ -702,7 +647,7 @@ const SignUp = () => {
                               color: "rgba(255, 255, 255, 0.7)",
                             }}
                           >
-                            Li e aceito os termos de uso.
+                            He leído y acepto los términos de uso.
                           </span>
                         }
                       />
@@ -731,7 +676,7 @@ const SignUp = () => {
                     }}
                     endIcon={<SendIcon />}
                   >
-                    {i18n.t("signup.buttons.submit")}
+                    Registrarse
                   </Button>
                   <StyledLink component={RouterLink} to="/login">
                     <Typography
@@ -740,7 +685,7 @@ const SignUp = () => {
                         color: "rgba(255, 255, 255, 0.7)",
                       }}
                     >
-                      {i18n.t("signup.buttons.login")}
+                      ¿Ya tienes una cuenta? Inicia sesión
                     </Typography>
                   </StyledLink>
                 </Form>
@@ -749,7 +694,6 @@ const SignUp = () => {
           </Box>
         </Card>
       </SignUpContainer>
-      {/* <Box mt={5}><Copyright /></Box> */}
     </>
   );
 };
