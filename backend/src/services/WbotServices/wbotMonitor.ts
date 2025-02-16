@@ -37,11 +37,10 @@ const wbotMonitor = async (
           where: { companyId },
         });
 
-
         if (settings.acceptCallWhatsapp === "enabled") {
           await wbot.sendMessage(node.attrs.from, {
             text:
-              "*Mensagem Automática:*\n\nAs chamadas de voz e vídeo estão desabilitas para esse WhatsApp, favor enviar uma mensagem de texto. Obrigado",
+              "*Mensaje Automático:*\n\nLas llamadas de voz y video están deshabilitadas en este WhatsApp. Por favor, envía un mensaje de texto. Gracias.",
           });
 
           const number = node.attrs.from.replace(/\D/g, "");
@@ -54,18 +53,18 @@ const wbotMonitor = async (
             where: {
               contactId: contact.id,
               whatsappId: wbot.id,
-              //status: { [Op.or]: ["close"] },
-              companyId
+              companyId,
             },
           });
-          // se não existir o ticket não faz nada.
+
+          // Si no existe el ticket, no hace nada.
           if (!ticket) return;
 
           const date = new Date();
           const hours = date.getHours();
           const minutes = date.getMinutes();
 
-          const body = `Chamada de voz/vídeo perdida às ${hours}:${minutes}`;
+          const body = `Llamada de voz/video perdida a las ${hours}:${minutes}`;
           const messageData = {
             wid: content.attrs["call-id"],
             ticketId: ticket.id,
@@ -82,7 +81,6 @@ const wbotMonitor = async (
             lastMessage: body,
           });
 
-
           if (ticket.status === "closed") {
             await ticket.update({
               status: "pending",
@@ -94,10 +92,7 @@ const wbotMonitor = async (
       }
     });
 
-
-
     wbot.ev.on("contacts.upsert", async (contacts: BContact[]) => {
-
       console.log("upsert", contacts);
 
       await createOrUpdateBaileysService({
@@ -106,9 +101,7 @@ const wbotMonitor = async (
       });
     });
 
-    // captura os contatos do whatsapp
-
-
+    // Captura los contactos de WhatsApp
   } catch (err) {
     Sentry.captureException(err);
     logger.error(err);
